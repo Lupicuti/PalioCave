@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -21,7 +21,7 @@
     <div class="container">
         <div class="header-inner">
             <a href="index.html" class="header-logo" aria-label="Trattato di Pace di Cave 1557 — Home">
-                <div class="logo-img" aria-hidden="true">✦</div>
+                <img src="assets/images/logo.jpg" alt="Logo Trattato di Pace di Cave 1557" class="logo-img">
                 <div class="logo-text">
                     Trattato di Pace
                     <span>di Cave 1557</span>
@@ -52,9 +52,15 @@
 
 <!-- Mobile Drawer -->
 <div class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu di navigazione">
-    <button class="drawer-close" id="drawer-close" aria-label="Chiudi menu">
-        <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-    </button>
+    <div class="drawer-header">
+        <div style="display:flex;align-items:center;gap:.75rem;">
+            <img src="assets/images/logo.jpg" alt="Logo Trattato di Pace di Cave 1557" class="logo-img" style="width:36px;height:36px;">
+            <div class="drawer-header-logo">Trattato di Pace<span>di Cave 1557</span></div>
+        </div>
+        <button class="drawer-close" id="drawer-close" aria-label="Chiudi menu">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+    </div>
     <nav aria-label="Navigazione mobile">
         <a href="index.html">Home</a>
         <a href="storia.html">La Storia</a>
@@ -188,6 +194,86 @@
                 <div style="font-family:var(--font-serif);font-size:3.5rem;color:var(--gold);line-height:1;">1557</div>
                 <div style="font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;font-family:var(--font-sans);color:rgba(245,237,216,.6);margin-top:.4rem;">Anno storico</div>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ LE 7 CONTRADE -->
+<section class="section-pad section-cream" aria-labelledby="contrade-home-heading">
+    <div class="container">
+        <div class="text-center reveal" style="margin-bottom:3rem;">
+            <p class="section-eyebrow">I Colori e i Rioni</p>
+            <h2 class="section-title" id="contrade-home-heading">Le Sette Contrade</h2>
+            <span class="gold-rule" aria-hidden="true"></span>
+            <p class="section-lead" style="margin:0 auto;text-align:center;">I sette rioni storici di Cave che si contendono ogni anno il prestigioso Drappo del Palio.</p>
+        </div>
+        <div class="contrade-grid">
+            <div class="contrada-card reveal reveal-delay-1">
+                <div class="contrada-gonfalone-wrap">
+                    <img src="assets/images/contrade/contrada-santa-maria-vecchia-refota.png" alt="Gonfalone Santa Maria Vecchia Refota" class="contrada-gonfalone">
+                </div>
+                <h3 class="contrada-name">Santa Maria Vecchia Refota</h3>
+                <span class="contrada-colors">Campione in Carica 2025 🏆</span>
+            </div>
+            <div class="contrada-card reveal reveal-delay-2">
+                <div class="contrada-gonfalone-wrap">
+                    <img src="assets/images/contrade/contrada-rocca.png" alt="Gonfalone Rocca di Cave" class="contrada-gonfalone">
+                </div>
+                <h3 class="contrada-name">Rocca di Cave</h3>
+                <span class="contrada-colors">Vincitrice 2024</span>
+            </div>
+            <div class="contrada-card reveal reveal-delay-3">
+                <div class="contrada-gonfalone-wrap">
+                    <img src="assets/images/contrade/contrada-santo-stefano.png" alt="Gonfalone Santo Stefano" class="contrada-gonfalone">
+                </div>
+                <h3 class="contrada-name">Santo Stefano</h3>
+                <span class="contrada-colors">Contrada Storica</span>
+            </div>
+            <div class="contrada-card reveal">
+                <div class="contrada-gonfalone-wrap">
+                    <img src="assets/images/contrade/contrada-san-lorenzo.png" alt="Gonfalone San Lorenzo" class="contrada-gonfalone">
+                </div>
+                <h3 class="contrada-name">San Lorenzo</h3>
+                <span class="contrada-colors">Contrada Storica</span>
+            </div>
+            <div class="contrada-card reveal reveal-delay-1">
+                <div class="contrada-gonfalone-wrap">
+                    <img src="assets/images/contrade/contrada-quattro-santi.png" alt="Gonfalone Quattro Santi" class="contrada-gonfalone">
+                </div>
+                <h3 class="contrada-name">Quattro Santi</h3>
+                <span class="contrada-colors">Contrada Storica</span>
+            </div>
+            <div class="contrada-card reveal reveal-delay-2">
+                <div class="contrada-gonfalone-wrap">
+                    <img src="assets/images/contrade/contrada-campo.png" alt="Gonfalone Campo" class="contrada-gonfalone">
+                </div>
+                <h3 class="contrada-name">Campo</h3>
+                <span class="contrada-colors">Contrada Storica</span>
+            </div>
+            <div class="contrada-card reveal reveal-delay-3">
+                <div class="contrada-gonfalone-wrap">
+                    <img src="assets/images/contrade/contrada-ceppo.png" alt="Gonfalone Ceppo" class="contrada-gonfalone">
+                </div>
+                <h3 class="contrada-name">Ceppo</h3>
+                <span class="contrada-colors">Contrada Storica</span>
+            </div>
+        </div>
+        <div class="text-center reveal" style="margin-top:2.5rem;">
+            <a href="palio.html" class="btn btn-gold">Scopri la sfida del Palio</a>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ CORTEO BANNER -->
+<section class="container" style="padding-top:2rem;padding-bottom:2rem;">
+    <div class="photo-banner reveal" style="background-image:url('assets/images/corteo-bg.jpg');">
+        <div class="photo-banner-content">
+            <p class="section-eyebrow" style="color:var(--gold);">Domenica 13 Settembre</p>
+            <h2 class="section-title light" style="font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:1rem;">Il Grande Corteo Storico</h2>
+            <p class="section-lead light" style="margin:0 auto 2rem;text-align:center;">
+                Oltre 200 figuranti in sfarzosi abiti cinquecenteschi, dame, cavalieri, il Cardinale Carafa, il Duca d'Alba, gli sbandieratori di Cori e gli archibugieri Trombonieri Senatore.
+            </p>
+            <a href="rievocazione.html" class="btn btn-gold">Vivi la Rievocazione</a>
         </div>
     </div>
 </section>

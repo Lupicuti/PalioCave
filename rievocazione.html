@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -18,13 +18,13 @@
 <header class="site-header" role="banner">
     <div class="container">
         <div class="header-inner">
-            <a href="index.html" class="header-logo" aria-label="Home">
-                <div class="logo-img" aria-hidden="true">✦</div>
+            <a href="index.html" class="header-logo" aria-label="Trattato di Pace di Cave 1557 — Home">
+                <img src="assets/images/logo.jpg" alt="Logo Trattato di Pace di Cave 1557" class="logo-img">
                 <div class="logo-text">Trattato di Pace<span>di Cave 1557</span></div>
             </a>
             <nav class="site-nav" aria-label="Navigazione principale">
                 <a href="storia.html">La Storia</a>
-                <a href="rievocazione.html">La Rievocazione</a>
+                <a href="rievocazione.html" class="active">La Rievocazione</a>
                 <a href="palio.html">Il Palio</a>
                 <a href="albo.html">Albo d'Oro</a>
                 <a href="programma.html">Programma</a>
@@ -43,7 +43,10 @@
 
 <div class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu di navigazione">
     <div class="drawer-header">
-        <div class="drawer-header-logo">Trattato di Pace<span>di Cave 1557</span></div>
+        <div style="display:flex;align-items:center;gap:.75rem;">
+            <img src="assets/images/logo.jpg" alt="Logo Trattato di Pace di Cave 1557" class="logo-img" style="width:36px;height:36px;">
+            <div class="drawer-header-logo">Trattato di Pace<span>di Cave 1557</span></div>
+        </div>
         <button class="drawer-close" id="drawer-close" aria-label="Chiudi menu"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
     </div>
     <nav>
@@ -63,7 +66,7 @@
 
 <main id="main-content">
 
-<section class="page-hero" aria-label="Intestazione pagina">
+<section class="page-hero hero-rievocazione" aria-label="Intestazione pagina">
     <div class="container page-hero-content">
         <p class="section-eyebrow">Ogni Settembre · Cave (RM)</p>
         <h1 class="display-title" style="font-size:clamp(2rem,6vw,4.5rem);">La Rievocazione</h1>
@@ -84,13 +87,17 @@
             <div class="step-num">1</div>
             <div class="step-content">
                 <div class="step-title">La Benedizione del Drappo e il Giuramento</div>
-                <p class="step-desc">
-                    Dopo la celebrazione della Santa Messa, l'atmosfera si fa carica di tensione ed emozione. 
-                    I priori di contrada, gli arcieri, i balestrieri e i campioni delle sette contrade si radunano 
-                    per il solenne <strong>Giuramento</strong>. Davanti alla comunità e sotto lo sguardo dei nobili, 
-                    i contendenti promettono lealtà e onore, accendendo ufficialmente la miccia della competizione.
-                    La <em>Cena Rinascimentale</em> suggella l'apertura in atmosfera d'epoca.
-                </p>
+                <div class="step-media-grid">
+                    <p class="step-desc">
+                        Dopo la celebrazione della Santa Messa, l'atmosfera si fa carica di tensione ed emozione. 
+                        I priori di contrada, gli arcieri, i balestrieri e i campioni delle sette contrade si radunano 
+                        per il solenne <strong>Giuramento</strong>. Davanti alla comunità e sotto lo sguardo dei nobili, 
+                        i contendenti promettono lealtà e onore. La <em>Cena Rinascimentale</em> suggella l'apertura in atmosfera d'epoca.
+                    </p>
+                    <div class="step-photo-frame">
+                        <img src="assets/images/cena-rinascimentale.jpg" alt="Cena Rinascimentale e apertura del Palio">
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -98,13 +105,16 @@
             <div class="step-num">2</div>
             <div class="step-content">
                 <div class="step-title">I Giochi Popolari (7 – 12 Settembre)</div>
-                <p class="step-desc">
-                    Nelle settimane successive al giuramento, le sette contrade si sfidano nei 
-                    <strong>giochi popolari</strong>: corsa nei sacchi, ruzzica, anelli, tiro alla fune, 
-                    conca e gioco della palla grossa. I partecipanti, grazie alla propria forza, 
-                    destrezza e un pizzico di astuzia, si mettono in gioco in queste antiche prove tramandati 
-                    di generazione in generazione.
-                </p>
+                <div class="step-media-grid">
+                    <p class="step-desc">
+                        Nelle settimane successive al giuramento, le sette contrade si sfidano nei 
+                        <strong>giochi popolari</strong>: tiro alla fune, corsa nei sacchi, ruzzica, anelli, 
+                        conca e gioco della palla grossa. Prove di pura forza, destrezza e astuzia tramandate di generazione in generazione.
+                    </p>
+                    <div class="step-photo-frame">
+                        <img src="assets/images/tiro-fune.jpg" alt="Tiro alla fune tra le Contrade di Cave">
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -112,13 +122,16 @@
             <div class="step-num">3</div>
             <div class="step-content">
                 <div class="step-title">I Giochi Popolari per Bambini (12 Settembre)</div>
-                <p class="step-desc">
-                    Un momento speciale dedicato ai più piccoli! Da anni l'associazione promuove i giochi 
-                    popolari anche tra i bambini, per tramandare il valore del gioco all'aperto e del 
-                    divertimento di squadra. Corsa nei sacchi, tiro alla fune, conca e molte altre sfide 
-                    aspettano i partecipanti dai 5 ai 17 anni. <strong>Sabato 12 Settembre, dalle ore 17:00</strong>, 
-                    Piazza Santi Patroni.
-                </p>
+                <div class="step-media-grid">
+                    <p class="step-desc">
+                        Un momento speciale dedicato ai più piccoli! Da anni l'associazione promuove i giochi 
+                        popolari tra i bambini dai 5 ai 17 anni: sacchi, tiro alla fune, conca e tanto divertimento. 
+                        <strong>Sabato 12 Settembre, dalle ore 17:00</strong>, Piazza Santi Patroni.
+                    </p>
+                    <div class="step-photo-frame">
+                        <img src="assets/images/bambini.png" alt="Giochi popolari per bambini al Palio di Cave">
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -126,14 +139,16 @@
             <div class="step-num">4</div>
             <div class="step-content">
                 <div class="step-title">La Firma della Pace e il Corteo Storico (13 Settembre)</div>
-                <p class="step-desc">
-                    Il gran finale: avviene la <strong>rievocazione storica della firma della Pace</strong>, 
-                    un momento di altissimo valore simbolico. Subito dopo, la storia prende vita nel 
-                    <strong>Corteo Storico</strong>, che attraversa le vie del paese in un trionfo di costumi 
-                    d'epoca. Ad aprire la sfilata le massime autorità: il Papa, i Cardinali Plenipotenziari, 
-                    il Duca d'Alba e il Marchese Diomede Carafa. Dietro di loro un fastoso seguito di nobili, 
-                    dame, cavalieri, armigeri e sbandieratori.
-                </p>
+                <div class="step-media-grid">
+                    <p class="step-desc">
+                        Il gran finale: avviene la <strong>rievocazione storica della firma della Pace</strong>, 
+                        seguita dal maestoso <strong>Corteo Storico</strong> con oltre 200 figuranti in costume cinquecentesco: il Papa, 
+                        i Cardinali Plenipotenziari, il Duca d'Alba, Diomede Carafa, nobili, dame, sbandieratori e archibugieri.
+                    </p>
+                    <div class="step-photo-frame">
+                        <img src="assets/images/corteo-bg.jpg" alt="Corteo Storico del Trattato di Pace di Cave">
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -141,13 +156,17 @@
             <div class="step-num">5</div>
             <div class="step-content">
                 <div class="step-title">Arco, Balestra e il Drappo del Palio</div>
-                <p class="step-desc">
-                    Il pomeriggio del 13 settembre si infiamma con la disputa dei tiri con 
-                    <strong>l'Arco e la Balestra antica da banco</strong> all'Anfiteatro Comunale. 
-                    Solo all'ultimo scoccare di freccia viene sollevato e consegnato il 
-                    <strong>Drappo del Palio</strong> alla contrada vincitrice, 
-                    tra l'urlo della folla e il suono degli archibugieri Trombonieri Senatore.
-                </p>
+                <div class="step-media-grid">
+                    <p class="step-desc">
+                        Il pomeriggio del 13 settembre si infiamma con la disputa dei tiri con 
+                        <strong>l'Arco e la Balestra antica da banco</strong> all'Anfiteatro Comunale. 
+                        All'ultimo scoccare di freccia viene sollevato e consegnato il 
+                        <strong>Drappo del Palio</strong> alla contrada vincitrice tra gli applausi e gli spari dei trombonieri.
+                    </p>
+                    <div class="step-photo-frame">
+                        <img src="assets/images/balestra.png" alt="Gara con la Balestra antica da banco">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

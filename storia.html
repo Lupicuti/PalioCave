@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -19,11 +19,11 @@
     <div class="container">
         <div class="header-inner">
             <a href="index.html" class="header-logo" aria-label="Trattato di Pace di Cave 1557 — Home">
-                <div class="logo-img" aria-hidden="true">✦</div>
+                <img src="assets/images/logo.jpg" alt="Logo Trattato di Pace di Cave 1557" class="logo-img">
                 <div class="logo-text">Trattato di Pace<span>di Cave 1557</span></div>
             </a>
             <nav class="site-nav" aria-label="Navigazione principale">
-                <a href="storia.html">La Storia</a>
+                <a href="storia.html" class="active">La Storia</a>
                 <a href="rievocazione.html">La Rievocazione</a>
                 <a href="palio.html">Il Palio</a>
                 <a href="albo.html">Albo d'Oro</a>
@@ -43,7 +43,10 @@
 
 <div class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu di navigazione">
     <div class="drawer-header">
-        <div class="drawer-header-logo">Trattato di Pace<span>di Cave 1557</span></div>
+        <div style="display:flex;align-items:center;gap:.75rem;">
+            <img src="assets/images/logo.jpg" alt="Logo Trattato di Pace di Cave 1557" class="logo-img" style="width:36px;height:36px;">
+            <div class="drawer-header-logo">Trattato di Pace<span>di Cave 1557</span></div>
+        </div>
         <button class="drawer-close" id="drawer-close" aria-label="Chiudi menu"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
     </div>
     <nav>
@@ -64,7 +67,7 @@
 <main id="main-content">
 
 <!-- Page Hero -->
-<section class="page-hero" aria-label="Intestazione pagina">
+<section class="page-hero hero-storia" aria-label="Intestazione pagina">
     <div class="container page-hero-content">
         <p class="section-eyebrow">Dal 1557</p>
         <h1 class="display-title" style="font-size:clamp(2rem,6vw,4.5rem);">La Storia</h1>
@@ -94,6 +97,15 @@
                 mettendo a ferro e fuoco le campagne laziali. Cave, borgo a pochi passi da Roma, 
                 si trovò al centro degli avvenimenti.
             </p>
+        </div>
+
+        <!-- Historical Photo Feature Frame -->
+        <div class="history-feature-card reveal">
+            <img src="assets/images/firma-pace.jpg" alt="Rievocazione della Firma della Pace di Cave 1557" class="history-feature-img">
+            <div class="history-feature-caption">
+                <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18zM12 8v4l3 3"/></svg>
+                <span>Rievocazione storica solenne della firma del Trattato di Pace di Cave tra i Cardinali pontifici e il Duca d'Alba.</span>
+            </div>
         </div>
 
         <blockquote class="pullquote reveal" style="margin:2.5rem 0;">

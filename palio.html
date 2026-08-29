@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -18,14 +18,14 @@
 <header class="site-header" role="banner">
     <div class="container">
         <div class="header-inner">
-            <a href="index.html" class="header-logo" aria-label="Home">
-                <div class="logo-img" aria-hidden="true">✦</div>
+            <a href="index.html" class="header-logo" aria-label="Trattato di Pace di Cave 1557 — Home">
+                <img src="assets/images/logo.jpg" alt="Logo Trattato di Pace di Cave 1557" class="logo-img">
                 <div class="logo-text">Trattato di Pace<span>di Cave 1557</span></div>
             </a>
             <nav class="site-nav" aria-label="Navigazione principale">
                 <a href="storia.html">La Storia</a>
                 <a href="rievocazione.html">La Rievocazione</a>
-                <a href="palio.html">Il Palio</a>
+                <a href="palio.html" class="active">Il Palio</a>
                 <a href="albo.html">Albo d'Oro</a>
                 <a href="programma.html">Programma</a>
                 <a href="eventicollaborazioni.html">Eventi</a>
@@ -43,7 +43,10 @@
 
 <div class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu di navigazione">
     <div class="drawer-header">
-        <div class="drawer-header-logo">Trattato di Pace<span>di Cave 1557</span></div>
+        <div style="display:flex;align-items:center;gap:.75rem;">
+            <img src="assets/images/logo.jpg" alt="Logo Trattato di Pace di Cave 1557" class="logo-img" style="width:36px;height:36px;">
+            <div class="drawer-header-logo">Trattato di Pace<span>di Cave 1557</span></div>
+        </div>
         <button class="drawer-close" id="drawer-close" aria-label="Chiudi menu"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
     </div>
     <nav>
@@ -63,7 +66,7 @@
 
 <main id="main-content">
 
-<section class="page-hero" aria-label="Intestazione pagina">
+<section class="page-hero hero-palio" aria-label="Intestazione pagina">
     <div class="container page-hero-content">
         <p class="section-eyebrow">7 Contrade in Sfida</p>
         <h1 class="display-title" style="font-size:clamp(2rem,6vw,4.5rem);">Il Palio</h1>
@@ -75,22 +78,25 @@
 <section class="section-pad section-cream" aria-labelledby="armi-heading">
     <div class="container">
         <div class="text-center reveal" style="margin-bottom:3rem;">
-            <p class="section-eyebrow">Gare storiche</p>
+            <p class="section-eyebrow">Gare storiche · 13 Settembre</p>
             <h2 class="section-title" id="armi-heading">Arco e Balestra Antica</h2>
             <span class="gold-rule" aria-hidden="true"></span>
-            <p class="section-lead" style="margin:0 auto;text-align:center;">Le gare di tiro, disputate il 13 Settembre, determinano la contrada vincitrice del Drappo.</p>
+            <p class="section-lead" style="margin:0 auto;text-align:center;">Le gare di tiro, disputate all'Anfiteatro Comunale, determinano la contrada vincitrice del Drappo.</p>
         </div>
-        <div class="grid-2" style="max-width:800px;margin:0 auto;">
+        <div class="grid-2" style="max-width:850px;margin:0 auto;">
             <div class="game-card reveal reveal-delay-1">
                 <div class="game-icon">🏹</div>
                 <div class="game-title">Tiro con l'Arco</div>
-                <p class="game-desc">Gli arcieri affrontano tre serie di tiri da tre frecce ciascuna. Competizione riservata all'uso di archi Longbow o storici, privi di sistemi di mira.</p>
-                <div class="game-rule"><strong>Regola:</strong> Frecce in legno con impennatura naturale recanti il nome della Contrada.</div>
+                <p class="game-desc">Gli arcieri affrontano tre serie di tiri da tre frecce ciascuna. Competizione riservata all'uso di archi Longbow o storici, privi di mirini.</p>
+                <div class="game-rule"><strong>Regola:</strong> Frecce in legno con impennatura naturale recanti il contrassegno della Contrada.</div>
             </div>
             <div class="game-card reveal reveal-delay-2">
-                <div class="game-icon">🎯</div>
+                <div class="game-card-img-top">
+                    <img src="assets/images/balestra.png" alt="Balestra antica da banco del Palio di Cave">
+                    <span class="game-badge-icon">🎯</span>
+                </div>
                 <div class="game-title">Tiro con la Balestra</div>
-                <p class="game-desc">Disciplina della Balestra antica da Banco con fusto in legno e arco in acciaio, prive di ottiche.</p>
+                <p class="game-desc">Disciplina della Balestra antica da Banco con fusto in legno e arco in acciaio, rigorosamente priva di ottiche.</p>
                 <div class="game-rule"><strong>Regola:</strong> Si tirano verrette in legno con piume naturali contrassegnate dalla Contrada.</div>
             </div>
         </div>
@@ -108,13 +114,19 @@
         </div>
         <div class="grid-3">
             <div class="game-card reveal reveal-delay-1">
-                <div class="game-icon">🪣</div>
+                <div class="game-card-img-top">
+                    <img src="assets/images/conca.jpg" alt="Gioco della Conca al Palio di Cave">
+                    <span class="game-badge-icon">🪣</span>
+                </div>
                 <div class="game-title">Gioco della Conca</div>
                 <p class="game-desc">Prova di velocità ed equilibrio: trasportare la conca piena d'acqua in equilibrio sulla testa per 15 metri e versarla.</p>
                 <div class="game-rule"><strong>Regola d'Oro:</strong> Durante il tragitto la conca va tenuta con una sola mano. Penalità d'acqua in caso di infrazione.</div>
             </div>
             <div class="game-card reveal reveal-delay-2">
-                <div class="game-icon">💪</div>
+                <div class="game-card-img-top">
+                    <img src="assets/images/tiro-fune.jpg" alt="Tiro alla Fune al Palio di Cave">
+                    <span class="game-badge-icon">💪</span>
+                </div>
                 <div class="game-title">Tiro alla Fune</div>
                 <p class="game-desc">Gioco di pura forza e resistenza. 5 giocatori per Contrada per trascinare il segno centrale oltre la linea.</p>
                 <div class="game-rule"><strong>Regola d'Oro:</strong> Proibito l'uso di guanti o scarpe antinfortunistiche. Vietato avvolgere la fune intorno al braccio.</div>
@@ -126,13 +138,19 @@
                 <div class="game-rule"><strong>Regola d'Oro:</strong> La linea di tiro va rispettata rigorosamente, senza sbilanciare il busto in avanti.</div>
             </div>
             <div class="game-card reveal">
-                <div class="game-icon">⭕</div>
+                <div class="game-card-img-top">
+                    <img src="assets/images/ruzzica.jpg" alt="Gioco della Ruzzica al Palio di Cave">
+                    <span class="game-badge-icon">🥏</span>
+                </div>
                 <div class="game-title">Gioco della Ruzzica</div>
                 <p class="game-desc">Gioco tradizionale. 2 giocatori si alternano nel lanciare un cerchio in legno cercando di coprire la maggior distanza.</p>
                 <div class="game-rule"><strong>Regola:</strong> Ogni Contrada gareggia con la propria cordella di lancio.</div>
             </div>
             <div class="game-card reveal reveal-delay-1">
-                <div class="game-icon">👟</div>
+                <div class="game-card-img-top">
+                    <img src="assets/images/sacchi.jpg" alt="Corsa con i Sacchi al Palio di Cave">
+                    <span class="game-badge-icon">👟</span>
+                </div>
                 <div class="game-title">Corsa con i Sacchi</div>
                 <p class="game-desc">Sfida individuale: completare un percorso di 20+20 metri indossando un sacco di iuta nel minor tempo possibile.</p>
                 <div class="game-rule"><strong>Regola d'Oro:</strong> Obbligo di stacco e atterraggio a piedi uniti. Arrivo valido solo al passaggio dei piedi.</div>
@@ -142,6 +160,69 @@
                 <div class="game-title">Gioco della Palla Grossa</div>
                 <p class="game-desc">Sfida di forza e strategia ispirata alla tradizione toscana. 5 atleti per Contrada, 2 tempi da 15 minuti effettivi.</p>
                 <div class="game-rule"><strong>Regola d'Oro:</strong> Si usano solo le mani. Massimo 5 secondi di possesso statico. L'area portiere non può essere calpestata in fase di tiro.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ LE 7 CONTRADE -->
+<section class="section-pad section-cream" aria-labelledby="contrade-heading">
+    <div class="container">
+        <div class="text-center reveal" style="margin-bottom:3rem;">
+            <p class="section-eyebrow">I 7 Rioni di Cave</p>
+            <h2 class="section-title" id="contrade-heading">I Gonfaloni delle Contrade</h2>
+            <span class="gold-rule" aria-hidden="true"></span>
+            <p class="section-lead" style="margin:0 auto;text-align:center;">Ogni contrada scende in campo fiera dei propri simboli, della propria storia e dei propri atleti.</p>
+        </div>
+        <div class="contrade-grid">
+            <div class="contrada-card reveal reveal-delay-1">
+                <div class="contrada-gonfalone-wrap">
+                    <img src="assets/images/contrade/contrada-santa-maria-vecchia-refota.png" alt="Gonfalone Santa Maria Vecchia Refota" class="contrada-gonfalone">
+                </div>
+                <h3 class="contrada-name">Santa Maria Vecchia Refota</h3>
+                <span class="contrada-colors">Campione in Carica 2025 🏆</span>
+            </div>
+            <div class="contrada-card reveal reveal-delay-2">
+                <div class="contrada-gonfalone-wrap">
+                    <img src="assets/images/contrade/contrada-rocca.png" alt="Gonfalone Rocca di Cave" class="contrada-gonfalone">
+                </div>
+                <h3 class="contrada-name">Rocca di Cave</h3>
+                <span class="contrada-colors">Vincitrice 2024</span>
+            </div>
+            <div class="contrada-card reveal reveal-delay-3">
+                <div class="contrada-gonfalone-wrap">
+                    <img src="assets/images/contrade/contrada-santo-stefano.png" alt="Gonfalone Santo Stefano" class="contrada-gonfalone">
+                </div>
+                <h3 class="contrada-name">Santo Stefano</h3>
+                <span class="contrada-colors">Contrada Storica</span>
+            </div>
+            <div class="contrada-card reveal">
+                <div class="contrada-gonfalone-wrap">
+                    <img src="assets/images/contrade/contrada-san-lorenzo.png" alt="Gonfalone San Lorenzo" class="contrada-gonfalone">
+                </div>
+                <h3 class="contrada-name">San Lorenzo</h3>
+                <span class="contrada-colors">Contrada Storica</span>
+            </div>
+            <div class="contrada-card reveal reveal-delay-1">
+                <div class="contrada-gonfalone-wrap">
+                    <img src="assets/images/contrade/contrada-quattro-santi.png" alt="Gonfalone Quattro Santi" class="contrada-gonfalone">
+                </div>
+                <h3 class="contrada-name">Quattro Santi</h3>
+                <span class="contrada-colors">Contrada Storica</span>
+            </div>
+            <div class="contrada-card reveal reveal-delay-2">
+                <div class="contrada-gonfalone-wrap">
+                    <img src="assets/images/contrade/contrada-campo.png" alt="Gonfalone Campo" class="contrada-gonfalone">
+                </div>
+                <h3 class="contrada-name">Campo</h3>
+                <span class="contrada-colors">Contrada Storica</span>
+            </div>
+            <div class="contrada-card reveal reveal-delay-3">
+                <div class="contrada-gonfalone-wrap">
+                    <img src="assets/images/contrade/contrada-ceppo.png" alt="Gonfalone Ceppo" class="contrada-gonfalone">
+                </div>
+                <h3 class="contrada-name">Ceppo</h3>
+                <span class="contrada-colors">Contrada Storica</span>
             </div>
         </div>
     </div>

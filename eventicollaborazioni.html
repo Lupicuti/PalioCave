@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -18,8 +18,8 @@
 <header class="site-header" role="banner">
     <div class="container">
         <div class="header-inner">
-            <a href="index.html" class="header-logo" aria-label="Home">
-                <div class="logo-img" aria-hidden="true">✦</div>
+            <a href="index.html" class="header-logo" aria-label="Trattato di Pace di Cave 1557 — Home">
+                <img src="assets/images/logo.jpg" alt="Logo Trattato di Pace di Cave 1557" class="logo-img">
                 <div class="logo-text">Trattato di Pace<span>di Cave 1557</span></div>
             </a>
             <nav class="site-nav" aria-label="Navigazione principale">
@@ -28,7 +28,7 @@
                 <a href="palio.html">Il Palio</a>
                 <a href="albo.html">Albo d'Oro</a>
                 <a href="programma.html">Programma</a>
-                <a href="eventicollaborazioni.html">Eventi</a>
+                <a href="eventicollaborazioni.html" class="active">Eventi</a>
             </nav>
             <div class="header-social">
                 <a href="https://www.facebook.com/PaceDiCave1557/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.312h3.587l-.467 3.622h-3.12V24h6.116C23.407 24 24 23.407 24 22.676V1.325C24 .593 23.407 0 22.675 0z"/></svg></a>
@@ -43,7 +43,10 @@
 
 <div class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu di navigazione">
     <div class="drawer-header">
-        <div class="drawer-header-logo">Trattato di Pace<span>di Cave 1557</span></div>
+        <div style="display:flex;align-items:center;gap:.75rem;">
+            <img src="assets/images/logo.jpg" alt="Logo Trattato di Pace di Cave 1557" class="logo-img" style="width:36px;height:36px;">
+            <div class="drawer-header-logo">Trattato di Pace<span>di Cave 1557</span></div>
+        </div>
         <button class="drawer-close" id="drawer-close" aria-label="Chiudi menu"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
     </div>
     <nav>
@@ -63,7 +66,7 @@
 
 <main id="main-content">
 
-<section class="page-hero" aria-label="Intestazione pagina">
+<section class="page-hero hero-eventi" aria-label="Intestazione pagina">
     <div class="container page-hero-content">
         <p class="section-eyebrow">Insieme è meglio</p>
         <h1 class="display-title" style="font-size:clamp(2rem,6vw,4.5rem);">Eventi & Collaborazioni</h1>
@@ -80,16 +83,23 @@
             <span class="gold-rule" aria-hidden="true"></span>
             <p class="section-lead" style="margin:0 auto;text-align:center;">L'iniziativa che porta i giochi storici nelle scuole di Cave, arrivata alla sua V edizione.</p>
         </div>
-        <div style="background:white;border-radius:var(--radius-md);padding:2.5rem;box-shadow:var(--shadow-sm);max-width:760px;margin:0 auto;" class="reveal">
-            <blockquote style="font-family:var(--font-body);font-size:1.2rem;font-style:italic;color:var(--burgundy);border-left:4px solid var(--gold);padding-left:1.5rem;margin-bottom:1.5rem;">
-                "Insegnare ai bambini è lo strumento più potente per preservare il passato e tramandare la storia."
-            </blockquote>
-            <p style="color:var(--slate);line-height:1.7;">
-                Ogni anno, la <em>V edizione di "Giochiamo alla Pace"</em> porta i bambini delle scuole di Cave 
-                a vivere in prima persona i giochi popolari della rievocazione. L'iniziativa è realizzata in 
-                collaborazione con l'<strong>Amministrazione Comunale</strong>, l'<strong>Istituto IC Matteotti 
-                e Regina Margherita</strong> e con il fondamentale contributo di volontari e insegnanti.
-            </p>
+        <div style="background:white;border-radius:var(--radius-md);padding:2.5rem;box-shadow:var(--shadow-sm);max-width:850px;margin:0 auto;" class="reveal">
+            <div style="display:grid;grid-template-columns:1fr;gap:2rem;align-items:center;" class="grid-2">
+                <div>
+                    <blockquote style="font-family:var(--font-body);font-size:1.15rem;font-style:italic;color:var(--burgundy);border-left:4px solid var(--gold);padding-left:1.25rem;margin-bottom:1.25rem;">
+                        "Insegnare ai bambini è lo strumento più potente per preservare il passato e tramandare la storia."
+                    </blockquote>
+                    <p style="color:var(--slate);line-height:1.7;font-size:.95rem;">
+                        Ogni anno, la <em>V edizione di "Giochiamo alla Pace"</em> porta i bambini delle scuole di Cave 
+                        a vivere in prima persona i giochi popolari della rievocazione. Realizzata in 
+                        collaborazione con l'<strong>Amministrazione Comunale</strong> e l'<strong>IC Matteotti 
+                        e Regina Margherita</strong>.
+                    </p>
+                </div>
+                <div style="border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid rgba(201,168,76,.3);max-height:220px;">
+                    <img src="assets/images/bambini.png" alt="Giochiamo alla Pace con i bambini delle scuole di Cave" style="width:100%;height:100%;object-fit:cover;">
+                </div>
+            </div>
         </div>
     </div>
 </section>
