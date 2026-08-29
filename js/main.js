@@ -78,4 +78,82 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    /* --------------------------------------------------------
+       Gallery Photo Slider
+    -------------------------------------------------------- */
+    const slides      = document.querySelectorAll('.gallery-slide');
+    const dots        = document.querySelectorAll('.gallery-dot');
+    const prevBtn     = document.getElementById('galleryPrev');
+    const nextBtn     = document.getElementById('galleryNext');
+    const progressBar = document.getElementById('galleryProgress');
+
+    if (slides.length > 0) {
+        const DURATION = 3500;
+        let current = 0;
+        let timer   = null;
+        let paused  = false;
+
+        function goTo(idx) {
+            slides[current].classList.remove('active');
+            if (dots[current]) { dots[current].classList.remove('active'); dots[current].setAttribute('aria-selected', 'false'); }
+
+            current = (idx + slides.length) % slides.length;
+
+            slides[current].classList.add('active');
+            if (dots[current]) { dots[current].classList.add('active'); dots[current].setAttribute('aria-selected', 'true'); }
+
+            resetProgress();
+        }
+
+        function resetProgress() {
+            if (!progressBar) return;
+            progressBar.style.transition = 'none';
+            progressBar.style.width = '0%';
+            void progressBar.offsetWidth;
+            progressBar.style.transition = `width ${DURATION}ms linear`;
+            progressBar.style.width = '100%';
+        }
+
+        function startAutoplay() {
+            stopAutoplay();
+            timer = setInterval(() => { if (!paused) goTo(current + 1); }, DURATION);
+            resetProgress();
+        }
+
+        function stopAutoplay() {
+            clearInterval(timer);
+            if (progressBar) {
+                progressBar.style.transition = 'none';
+                const computed = getComputedStyle(progressBar).width;
+                const parent   = progressBar.parentElement?.offsetWidth || 1;
+                progressBar.style.width = (parseFloat(computed) / parent * 100) + '%';
+            }
+        }
+
+        prevBtn?.addEventListener('click', () => { goTo(current - 1); startAutoplay(); });
+        nextBtn?.addEventListener('click', () => { goTo(current + 1); startAutoplay(); });
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => { goTo(parseInt(dot.dataset.index, 10)); startAutoplay(); });
+        });
+
+        const sliderSection = document.getElementById('gallery-slider');
+        sliderSection?.addEventListener('mouseenter', () => { paused = true;  stopAutoplay(); });
+        sliderSection?.addEventListener('mouseleave', () => { paused = false; startAutoplay(); });
+
+        let touchStartX = 0;
+        sliderSection?.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        sliderSection?.addEventListener('touchend', e => {
+            const dx = e.changedTouches[0].screenX - touchStartX;
+            if (Math.abs(dx) > 40) { goTo(dx < 0 ? current + 1 : current - 1); startAutoplay(); }
+        }, { passive: true });
+
+        sliderSection?.addEventListener('keydown', e => {
+            if (e.key === 'ArrowLeft')  { goTo(current - 1); startAutoplay(); }
+            if (e.key === 'ArrowRight') { goTo(current + 1); startAutoplay(); }
+        });
+
+        startAutoplay();
+    }
+
 });
