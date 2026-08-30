@@ -14,6 +14,18 @@ document.addEventListener('DOMContentLoaded', () => {
         onScroll();
     }
 
+    /* --- Mailto Links Handler --- */
+    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+        link.style.cursor = 'pointer';
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (href) {
+                // Ensures execution on any browser / OS
+                window.location.href = href;
+            }
+        });
+    });
+
     /* --- Mobile drawer --- */
     const toggle   = document.getElementById('nav-toggle');
     const drawer   = document.getElementById('mobile-drawer');

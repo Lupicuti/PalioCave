@@ -802,7 +802,13 @@ a { text-decoration: none; color: inherit; }
 .footer-links a { font-size: .9rem; color: rgba(245,237,216,.65); transition: var(--transition); }
 .footer-links a:hover { color: var(--gold); padding-left: 4px; }
 .footer-contact p { font-size: .9rem; margin-bottom: .4rem; }
-.footer-contact a { color: var(--gold); transition: var(--transition); }
+.footer-contact a {
+    color: var(--gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: var(--transition);
+    cursor: pointer;
+}
 .footer-contact a:hover { color: var(--gold-lt); }
 .footer-social { display: flex; gap: .75rem; margin-top: 1.25rem; }
 .footer-social a {
@@ -822,10 +828,26 @@ a { text-decoration: none; color: inherit; }
     justify-content: center;
     align-items: center;
     gap: .5rem;
-    font-size: .8rem;
-    color: rgba(245,237,216,.35);
+    font-size: .85rem;
+    color: rgba(245,237,216,.6);
     text-align: center;
 }
+.footer-credit {
+    color: rgba(245,237,216,.75);
+}
+.footer-credit a {
+    color: var(--gold);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: var(--transition);
+    cursor: pointer;
+}
+.footer-credit a:hover {
+    color: var(--cream);
+    text-shadow: 0 0 10px rgba(201,168,76,0.6);
+}
+
 
 /* ============================================================
    MOBILE STICKY BAR
