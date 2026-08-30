@@ -15,6 +15,15 @@
     <link rel="stylesheet" href="css/style.css">
 
     <style>
+        /* ─── Force header dark on this page (no hero image behind it) ── */
+        /* On other pages the transparent header sits on top of a dark hero image.
+           Here the live section is light (parchment), so we force the dark style. */
+        .site-header {
+            background: rgba(28, 16, 8, 0.96) !important;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 2px 24px rgba(0,0,0,.4);
+        }
+
         /* ─── Live Badge Header ──────────────────────────────── */
         .live-badge-hero {
             background-color: #c0392b;
@@ -411,18 +420,23 @@
     </div>
 </div>
 
-<!-- ============================================================ HERO SECTION -->
+<!-- ============================================================ PAGE HEADER -->
 <main id="main-content">
-<section class="page-hero hero-palio" aria-label="Intestazione Palio Live">
-    <div class="container page-hero-content">
-        <div class="live-badge-hero"><div class="live-dot"></div> IN DIRETTA</div>
-        <p class="section-eyebrow">Edizione 2026</p>
-        <h1 class="display-title" style="font-size:clamp(2.2rem,6vw,4.2rem);">Palio Live</h1>
-        <p class="page-hero-subtitle">Classifica generale, gironi e risultati in tempo reale</p>
+<div style="padding-top:80px; background: linear-gradient(135deg, var(--ink) 0%, #3a1515 100%); border-bottom: 2px solid var(--gold);">
+    <div class="container" style="padding: 2.5rem 1.5rem 2rem;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem;">
+            <div>
+                <p class="section-eyebrow">Edizione 2026 &middot; Trattato di Pace di Cave</p>
+                <h1 class="display-title" style="font-size:clamp(2rem,5vw,3.5rem); margin:0.4rem 0 0.6rem;">Palio Live</h1>
+                <p class="page-hero-subtitle" style="margin:0;">Classifica generale, gironi e risultati in tempo reale</p>
+            </div>
+            <div class="live-badge-hero"><div class="live-dot"></div> IN DIRETTA</div>
+        </div>
     </div>
-</section>
+</div>
 
 <!-- ============================================================ LIVE BOARD -->
+
 <section class="live-section">
     <div class="live-container">
 
