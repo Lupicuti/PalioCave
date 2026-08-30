@@ -20,44 +20,83 @@ function name(id) {
     return c ? c.name : id;
 }
 
-// ─── Show file:// warning & pre-populate table immediately ──────────────────────────
-// We render all 7 teams at 0 pts alphabetically right away.
-// Firebase will overwrite with live data as soon as it connects.
-const alphabetical = [...contrade].sort((a, b) => a.name.localeCompare(b.name, 'it'));
-renderLeaderboard(Object.fromEntries(alphabetical.map(c => [c.id, 0])));
-document.getElementById('last-update').textContent = 'In attesa di connessione al database…';
+// ─── Initial Render (Instant, zero lag) ───────────────────────────────────────
+function renderDefaultState() {
+    // Alphabetical order for initial 0-point state
+    const alphabetical = [...contrade].sort((a, b) => a.name.localeCompare(b.name, 'it'));
+    renderLeaderboard(Object.fromEntries(alphabetical.map(c => [c.id, 0])), true);
+    
+    renderTournament('palla', null, gruppiPalla);
+    renderTournament('fune',  null, gruppiFune);
+    renderRanking('conca',    null);
+    renderRanking('anelli',   null);
+    renderRanking('ruzzica',  null);
+    renderRanking('sacchi',   null);
+    renderShootingScore('arco',      null);
+    renderShootingScore('balestra',  null);
 
-if (location.protocol === 'file:') {
-    document.getElementById('file-protocol-warning').style.display = 'block';
+    const updateEl = document.getElementById('last-update');
+    if (updateEl) {
+        updateEl.textContent = 'Classifica iniziale · In attesa dell\'inizio delle gare';
+    }
 }
 
-// ─── Firestore listener ──────────────────────────────────────────────────────
-onSnapshot(doc(db, "palio_2026", "live_data"), (snap) => {
-    if (!snap.exists()) {
-        document.getElementById('global-leaderboard').innerHTML =
-            '<tr><td colspan="3" style="text-align:center;padding:2rem;color:#888;">Nessun dato ancora. Il database sarà inizializzato al primo accesso admin.</td></tr>';
-        return;
-    }
-    const data = snap.data();
-    document.getElementById('last-update').textContent =
-        'Ultimo aggiornamento: ' + new Date().toLocaleTimeString('it-IT');
+// Run default render immediately
+renderDefaultState();
 
-    renderLeaderboard(data.punteggi_totali || {});
-    renderTournament('palla', data.tornei?.palla ?? null, gruppiPalla);
-    renderTournament('fune',  data.tornei?.fune  ?? null, gruppiFune);
-    renderRanking('conca',    data.giochi?.conca   ?? null);
-    renderRanking('anelli',   data.giochi?.anelli  ?? null);
-    renderRanking('ruzzica',  data.giochi?.ruzzica ?? null);
-    renderRanking('sacchi',   data.giochi?.sacchi  ?? null);
-    renderShootingScore('arco',      data.giochi?.arco      ?? null);
-    renderShootingScore('balestra',  data.giochi?.balestra  ?? null);
-});
+// ─── Firestore listener ──────────────────────────────────────────────────────
+try {
+    onSnapshot(
+        doc(db, "palio_2026", "live_data"),
+        (snap) => {
+            const updateEl = document.getElementById('last-update');
+            if (snap.exists()) {
+                const data = snap.data();
+                if (updateEl) {
+                    updateEl.textContent = `In diretta dal campo · Aggiornato alle ${new Date().toLocaleTimeString('it-IT')}`;
+                }
+                renderLeaderboard(data.punteggi_totali || {});
+                renderTournament('palla', data.tornei?.palla ?? null, gruppiPalla);
+                renderTournament('fune',  data.tornei?.fune  ?? null, gruppiFune);
+                renderRanking('conca',    data.giochi?.conca   ?? null);
+                renderRanking('anelli',   data.giochi?.anelli  ?? null);
+                renderRanking('ruzzica',  data.giochi?.ruzzica ?? null);
+                renderRanking('sacchi',   data.giochi?.sacchi  ?? null);
+                renderShootingScore('arco',      data.giochi?.arco      ?? null);
+                renderShootingScore('balestra',  data.giochi?.balestra  ?? null);
+            } else {
+                if (updateEl) {
+                    updateEl.textContent = 'Connesso al database · In attesa dell\'inizio delle gare';
+                }
+            }
+        },
+        (error) => {
+            console.warn("Firestore snapshot info:", error);
+            const updateEl = document.getElementById('last-update');
+            if (updateEl) {
+                updateEl.textContent = 'Classifica provvisoria · In attesa dell\'inizio delle gare';
+            }
+        }
+    );
+} catch (e) {
+    console.warn("Firebase initialization note:", e);
+}
 
 // ─── Classifica Generale ─────────────────────────────────────────────────────
-function renderLeaderboard(punteggi) {
-    const sorted = contrade
-        .map(c => ({ id: c.id, pts: punteggi[c.id] ?? 0 }))
-        .sort((a, b) => b.pts - a.pts);
+function renderLeaderboard(punteggi, forceAlpha = false) {
+    let sorted;
+    if (forceAlpha) {
+        sorted = [...contrade].sort((a, b) => a.name.localeCompare(b.name, 'it')).map(c => ({ id: c.id, pts: 0 }));
+    } else {
+        const hasPoints = Object.values(punteggi).some(p => p > 0);
+        if (!hasPoints) {
+            sorted = [...contrade].sort((a, b) => a.name.localeCompare(b.name, 'it')).map(c => ({ id: c.id, pts: punteggi[c.id] ?? 0 }));
+        } else {
+            sorted = contrade
+                .map(c => ({ id: c.id, pts: punteggi[c.id] ?? 0 }))
+                .sort((a, b) => b.pts - a.pts);
+        }
+    }
 
     let html = '';
     sorted.forEach((item, i) => {
@@ -66,10 +105,11 @@ function renderLeaderboard(punteggi) {
             <tr>
                 <td class="rank-col">${icon}</td>
                 <td class="name-col">${name(item.id)}</td>
-                <td class="score-col">${item.pts}<span class="pts-label">pt</span></td>
+                <td class="score-col">${item.pts}<span>pt</span></td>
             </tr>`;
     });
-    document.getElementById('global-leaderboard').innerHTML = html;
+    const el = document.getElementById('global-leaderboard');
+    if (el) el.innerHTML = html;
 }
 
 // ─── Tornei (Palla & Fune) ───────────────────────────────────────────────────
@@ -81,8 +121,10 @@ function renderTournament(game, torneiData, gruppi) {
     const stB = calcStandings('B', gruppi.B, matchesData);
 
     // Groups
-    document.getElementById(`${game}-groups`).innerHTML =
-        buildGroupCard('Girone A', stA) + buildGroupCard('Girone B', stB);
+    const groupEl = document.getElementById(`${game}-groups`);
+    if (groupEl) {
+        groupEl.innerHTML = buildGroupCard('Girone A', stA) + buildGroupCard('Girone B', stB);
+    }
 
     // Finals
     const a1 = stA[0]?.id, a2 = stA[1]?.id;
@@ -95,22 +137,25 @@ function renderTournament(game, torneiData, gruppi) {
     const sf2w = resolveWinner(b1, a2, sc('sf2-score1'), sc('sf2-score2'));
     const sf2l = resolveLooser(b1, a2, sc('sf2-score1'), sc('sf2-score2'));
 
-    document.getElementById(`${game}-finals`).innerHTML = `
-        <div class="bracket-card">
-            <h4 style="font-size:1.1rem; margin-bottom:1.25rem;">Fase Finale</h4>
+    const finalsEl = document.getElementById(`${game}-finals`);
+    if (finalsEl) {
+        finalsEl.innerHTML = `
+            <div class="bracket-card">
+                <h4>Fase Finale</h4>
 
-            <div class="bracket-label">Semifinale 1</div>
-            ${buildBracketMatch(a1, b2, sc('sf1-score1'), sc('sf1-score2'))}
+                <div class="bracket-label">Semifinale 1 (1° Girone A vs 2° Girone B)</div>
+                ${buildBracketMatch(a1, b2, sc('sf1-score1'), sc('sf1-score2'))}
 
-            <div class="bracket-label">Semifinale 2</div>
-            ${buildBracketMatch(b1, a2, sc('sf2-score1'), sc('sf2-score2'))}
+                <div class="bracket-label">Semifinale 2 (1° Girone B vs 2° Girone A)</div>
+                ${buildBracketMatch(b1, a2, sc('sf2-score1'), sc('sf2-score2'))}
 
-            <div class="bracket-label">Finale 3° / 4° Posto</div>
-            ${buildBracketMatch(sf1l, sf2l, sc('f3-score1'), sc('f3-score2'))}
+                <div class="bracket-label">Finale 3° / 4° Posto</div>
+                ${buildBracketMatch(sf1l, sf2l, sc('f3-score1'), sc('f3-score2'))}
 
-            <div class="bracket-label gold">🏆 Finale 1° / 2° Posto</div>
-            ${buildBracketMatch(sf1w, sf2w, sc('f1-score1'), sc('f1-score2'), true)}
-        </div>`;
+                <div class="bracket-label gold">🏆 Finale 1° / 2° Posto</div>
+                ${buildBracketMatch(sf1w, sf2w, sc('f1-score1'), sc('f1-score2'), true)}
+            </div>`;
+    }
 }
 
 function buildGroupCard(title, standings) {
@@ -164,8 +209,9 @@ function resolveLooser(t1, t2, s1, s2) {
 // ─── Giochi Popolari a Classifica ────────────────────────────────────────────
 function renderRanking(game, data) {
     const container = document.getElementById(`results-${game}`);
+    if (!container) return;
     if (!data || Object.keys(data).length === 0) {
-        container.innerHTML = `<div class="ranking-card"><p class="pending-msg">Gara non ancora disputata.</p></div>`;
+        container.innerHTML = `<div class="ranking-card"><p class="pending-msg">Gara non ancora disputata. La classifica verrà inserita al termine della prova.</p></div>`;
         return;
     }
 
@@ -175,7 +221,7 @@ function renderRanking(game, data) {
         const cId = data[pos];
         if (!cId) continue;
         const icon  = RANK_ICONS[pos - 1];
-        const label = pts[pos] ? `<span class="ranking-pts">(${pts[pos]} pt Palio)</span>` : '';
+        const label = pts[pos] ? `<span class="ranking-pts">+${pts[pos]} pt Palio</span>` : '<span style="color:#a89b8d;font-size:0.8rem;">0 pt</span>';
         rows += `
             <div class="ranking-row">
                 <div style="display:flex;align-items:center;gap:0.75rem;">
@@ -192,8 +238,9 @@ function renderRanking(game, data) {
 // ─── Arco & Balestra ─────────────────────────────────────────────────────────
 function renderShootingScore(game, data) {
     const container = document.getElementById(`results-${game}`);
+    if (!container) return;
     if (!data || Object.keys(data).length === 0) {
-        container.innerHTML = `<div class="score-card"><p class="pending-msg">Gara non ancora disputata.</p></div>`;
+        container.innerHTML = `<div class="score-card"><p class="pending-msg">Gara non ancora disputata. I punteggi dei bersagli verranno registrati in diretta.</p></div>`;
         return;
     }
     const sorted = contrade
@@ -203,7 +250,7 @@ function renderShootingScore(game, data) {
     const rows = sorted.map(s => `
         <div class="score-row">
             <span class="score-name">${name(s.id)}</span>
-            <span class="score-val">${s.pt} <span style="font-size:0.72rem;font-weight:400;color:#888;">pt</span></span>
+            <span class="score-val">${s.pt} <span style="font-size:0.75rem;font-weight:500;color:#7a6b5e;">pt</span></span>
         </div>`).join('');
 
     container.innerHTML = `<div class="score-card">${rows}</div>`;
@@ -223,11 +270,13 @@ function calcStandings(group, teams, matchesData) {
         const { s1, s2 } = m;
         const a = st.find(x => x.id === ta);
         const b = st.find(x => x.id === tb);
-        a.gf += s1; a.gs += s2;
-        b.gf += s2; b.gs += s1;
-        if      (s1 > s2) a.pts += 2;
-        else if (s2 > s1) b.pts += 2;
-        else              { a.pts += 1; b.pts += 1; }
+        if (a && b) {
+            a.gf += s1; a.gs += s2;
+            b.gf += s2; b.gs += s1;
+            if      (s1 > s2) a.pts += 2;
+            else if (s2 > s1) b.pts += 2;
+            else              { a.pts += 1; b.pts += 1; }
+        }
     });
 
     return st.sort((a, b) => b.pts !== a.pts
