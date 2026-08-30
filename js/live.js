@@ -10,6 +10,19 @@ const contrade = [
     { id: "ceppo",   name: "Ceppo",                    stemma: "assets/images/contrade/contrada-ceppo.webp" }
 ];
 
+const allGamesList = ['palla', 'fune', 'conca', 'anelli', 'ruzzica', 'sacchi', 'arco', 'balestra'];
+
+const gameDisplayNames = {
+    palla:    "Palla Grossa",
+    fune:     "Tiro alla Fune",
+    conca:    "Gioco della Conca",
+    anelli:   "Gioco degli Anelli",
+    ruzzica:  "Gioco della Ruzzica",
+    sacchi:   "Corsa con i Sacchi",
+    arco:     "Tiro con l'Arco",
+    balestra: "Balestra Antica"
+};
+
 const gruppiPalla = { A: ["campo", "stefano", "smvr", "4sc"], B: ["ceppo", "lorenzo", "rocca"] };
 const gruppiFune  = { A: ["rocca", "4sc", "lorenzo", "campo"], B: ["smvr", "stefano", "ceppo"] };
 
@@ -20,7 +33,11 @@ function name(id) {
     return c ? c.name : id;
 }
 
-// Returns a small round coat-of-arms <img> tag for a given contrada id
+function getStemmaUrl(id) {
+    const c = contrade.find(x => x.id === id);
+    return c ? c.stemma : '';
+}
+
 function stemmaImg(id, size = 28) {
     const c = contrade.find(x => x.id === id);
     if (!c) return '';
@@ -58,18 +75,42 @@ try {
             const updateEl = document.getElementById('last-update');
             if (snap.exists()) {
                 const data = snap.data();
+                
+                // 1. Render all games
+                const pallaWinner = renderTournament('palla', data.tornei?.palla ?? null, gruppiPalla);
+                const funeWinner  = renderTournament('fune',  data.tornei?.fune  ?? null, gruppiFune);
+                const concaWinner = renderRanking('conca',    data.giochi?.conca   ?? null);
+                const anelliWinner= renderRanking('anelli',   data.giochi?.anelli  ?? null);
+                const ruzzicaWinner=renderRanking('ruzzica',  data.giochi?.ruzzica ?? null);
+                const sacchiWinner= renderRanking('sacchi',   data.giochi?.sacchi  ?? null);
+                const arcoWinner  = renderShootingScore('arco',     data.giochi?.arco      ?? null);
+                const balestraWinner=renderShootingScore('balestra', data.giochi?.balestra  ?? null);
+
+                // 2. Check if all games are finished
+                const gameWinners = {
+                    palla: pallaWinner,
+                    fune: funeWinner,
+                    conca: concaWinner,
+                    anelli: anelliWinner,
+                    ruzzica: ruzzicaWinner,
+                    sacchi: sacchiWinner,
+                    arco: arcoWinner,
+                    balestra: balestraWinner
+                };
+
+                const allFinished = allGamesList.every(g => Boolean(gameWinners[g]));
+
+                // 3. Render Leaderboard & Champion banner
+                renderLeaderboard(data.punteggi_totali || {}, false, allFinished);
+
                 if (updateEl) {
-                    updateEl.textContent = `In diretta dal campo · Aggiornato alle ${new Date().toLocaleTimeString('it-IT')}`;
+                    if (allFinished) {
+                        const topContrada = contrade.map(c => ({ id: c.id, pts: data.punteggi_totali?.[c.id] ?? 0 })).sort((a,b) => b.pts - a.pts)[0];
+                        updateEl.innerHTML = `🏆 <strong>PALIO 2026 CONCLUSO</strong> &middot; Vincitrice: <strong>${name(topContrada?.id)}</strong> (${topContrada?.pts} pt)`;
+                    } else {
+                        updateEl.textContent = `In diretta dal campo · Aggiornato alle ${new Date().toLocaleTimeString('it-IT')}`;
+                    }
                 }
-                renderLeaderboard(data.punteggi_totali || {});
-                renderTournament('palla', data.tornei?.palla ?? null, gruppiPalla);
-                renderTournament('fune',  data.tornei?.fune  ?? null, gruppiFune);
-                renderRanking('conca',    data.giochi?.conca   ?? null);
-                renderRanking('anelli',   data.giochi?.anelli  ?? null);
-                renderRanking('ruzzica',  data.giochi?.ruzzica ?? null);
-                renderRanking('sacchi',   data.giochi?.sacchi  ?? null);
-                renderShootingScore('arco',      data.giochi?.arco      ?? null);
-                renderShootingScore('balestra',  data.giochi?.balestra  ?? null);
             } else {
                 if (updateEl) {
                     updateEl.textContent = 'Connesso al database · In attesa dell\'inizio delle gare';
@@ -88,8 +129,8 @@ try {
     console.warn("Firebase initialization note:", e);
 }
 
-// ─── Classifica Generale ─────────────────────────────────────────────────────
-function renderLeaderboard(punteggi, forceAlpha = false) {
+// ─── Classifica Generale & Palio Champion ─────────────────────────────────────
+function renderLeaderboard(punteggi, forceAlpha = false, allFinished = false) {
     let sorted;
     if (forceAlpha) {
         sorted = [...contrade].sort((a, b) => a.name.localeCompare(b.name, 'it')).map(c => ({ id: c.id, pts: 0 }));
@@ -101,6 +142,27 @@ function renderLeaderboard(punteggi, forceAlpha = false) {
             sorted = contrade
                 .map(c => ({ id: c.id, pts: punteggi[c.id] ?? 0 }))
                 .sort((a, b) => b.pts - a.pts);
+        }
+    }
+
+    // Grand Palio Champion Banner
+    const champEl = document.getElementById('palio-champion-banner');
+    if (champEl) {
+        if (allFinished && sorted.length > 0 && sorted[0].pts > 0) {
+            const winner = sorted[0];
+            champEl.innerHTML = `
+                <div class="palio-champion-card">
+                    <div class="palio-champion-badge">🎉 Palio di Cave 2026 Concluso 🎉</div>
+                    <h2 class="palio-champion-title">🏆 CONTRADA ${name(winner.id).toUpperCase()}</h2>
+                    <div style="margin:1.1rem auto; display:flex; align-items:center; justify-content:center;">
+                        <img src="${getStemmaUrl(winner.id)}" alt="Stemma ${name(winner.id)}" style="width:75px; height:75px; border-radius:50%; object-fit:cover; border:3.5px solid var(--gold); box-shadow:0 0 25px rgba(201,168,76,0.65);">
+                    </div>
+                    <div style="font-family:var(--font-serif); font-size:1.4rem; color:var(--cream); font-weight:700;">VINCITRICE DEL PALIO 2026</div>
+                    <p class="palio-champion-score">Campione del Palio della Pace con ${winner.pts} Punti Totali</p>
+                </div>
+            `;
+        } else {
+            champEl.innerHTML = '';
         }
     }
 
@@ -132,14 +194,21 @@ function renderTournament(game, torneiData, gruppi) {
     const stA = calcStandings('A', gruppi.A, matchesData, game);
     const stB = calcStandings('B', gruppi.B, matchesData, game);
 
-    // Groups
+    // 1. Group Standings Tables
     const groupEl = document.getElementById(`${game}-groups`);
     if (groupEl) {
         groupEl.innerHTML = buildGroupCard('Girone A', stA, isFune)
                           + buildGroupCard('Girone B', stB, isFune);
     }
 
-    // Check if ALL group matches are played
+    // 2. Group Individual Matches & Results
+    const matchesEl = document.getElementById(`${game}-matches`);
+    if (matchesEl) {
+        matchesEl.innerHTML = buildGroupMatchesList(game, 'Girone A', 'A', gruppi.A, matchesData, isFune)
+                            + buildGroupMatchesList(game, 'Girone B', 'B', gruppi.B, matchesData, isFune);
+    }
+
+    // 3. Finals Bracket
     const pairsA = countPairs(gruppi.A);
     const pairsB = countPairs(gruppi.B);
     const playedA = Object.keys(matchesData).filter(k => k.startsWith('A-')).length;
@@ -147,7 +216,11 @@ function renderTournament(game, torneiData, gruppi) {
     const allGroupsComplete = playedA >= pairsA && playedB >= pairsB;
 
     const finalsEl = document.getElementById(`${game}-finals`);
-    if (!finalsEl) return;
+    const winnerBannerEl = document.getElementById(`winner-banner-${game}`);
+
+    let tournamentWinner = null;
+
+    if (!finalsEl) return null;
 
     if (!allGroupsComplete) {
         const played = playedA + playedB;
@@ -158,10 +231,11 @@ function renderTournament(game, torneiData, gruppi) {
                 <p style="font-size:0.92rem;">Il tabellone delle fasi finali comparirà automaticamente al termine di tutti i gironi.<br>
                 <strong>${played} / ${total}</strong> sfide disputate.</p>
             </div>`;
-        return;
+        if (winnerBannerEl) winnerBannerEl.innerHTML = '';
+        return null;
     }
 
-    // All matches played: show the full bracket
+    // All matches played: resolve finalists
     const a1 = stA[0]?.id, a2 = stA[1]?.id;
     const b1 = stB[0]?.id, b2 = stB[1]?.id;
 
@@ -181,6 +255,22 @@ function renderTournament(game, torneiData, gruppi) {
             sf2w = finalsData['sf2-winner'];
             sf2l = sf2w === b1 ? a2 : b1;
         }
+        if (finalsData['f1-winner']) {
+            tournamentWinner = finalsData['f1-winner'];
+        }
+    } else {
+        if (sf1w && sf2w && sc('f1-score1') !== null && sc('f1-score2') !== null) {
+            tournamentWinner = resolveWinner(sf1w, sf2w, sc('f1-score1'), sc('f1-score2'));
+        }
+    }
+
+    // Render Game Winner Banner if resolved
+    if (winnerBannerEl) {
+        if (tournamentWinner) {
+            winnerBannerEl.innerHTML = buildGameWinnerBanner(gameDisplayNames[game], tournamentWinner, "+7 Punti Palio");
+        } else {
+            winnerBannerEl.innerHTML = '';
+        }
     }
 
     finalsEl.innerHTML = `
@@ -199,6 +289,8 @@ function renderTournament(game, torneiData, gruppi) {
             <div class="bracket-label gold">🏆 Finale 1° / 2° Posto</div>
             ${buildBracketMatch(sf1w, sf2w, sc('f1-score1'), sc('f1-score2'), true, isFune, finalsData['f1-winner'])}
         </div>`;
+
+    return tournamentWinner;
 }
 
 function countPairs(teams) {
@@ -251,6 +343,63 @@ function buildGroupCard(title, standings, isFune = false) {
                 <tbody>${rowsHtml}</tbody>
             </table>
         </div>`;
+}
+
+function buildGroupMatchesList(game, groupName, groupCode, teams, matchesData, isFune = false) {
+    const pairs = [];
+    for (let i = 0; i < teams.length; i++) {
+        for (let j = i + 1; j < teams.length; j++) {
+            pairs.push([teams[i], teams[j]]);
+        }
+    }
+
+    const items = pairs.map(([t1, t2], idx) => {
+        const m = matchesData?.[`${groupCode}-${idx}`];
+        let scoreHtml = '';
+
+        if (!m) {
+            scoreHtml = `<span class="match-score-badge pending">Da disputare</span>`;
+        } else if (isFune) {
+            const winner = m.winner || (m.s1 > m.s2 ? t1 : (m.s2 > m.s1 ? t2 : null));
+            if (winner) {
+                const wName = name(winner);
+                scoreHtml = `<span class="match-score-badge" style="background:#27ae60;color:#ffffff;border-color:#27ae60;font-size:0.78rem;padding:0.25rem 0.6rem;">🏆 Vince ${wName}</span>`;
+            } else {
+                scoreHtml = `<span class="match-score-badge pending">Da disputare</span>`;
+            }
+        } else {
+            const s1 = m.s1 !== undefined ? m.s1 : null;
+            const s2 = m.s2 !== undefined ? m.s2 : null;
+            if (s1 !== null && s2 !== null) {
+                scoreHtml = `<span class="match-score-badge">${s1} &ndash; ${s2}</span>`;
+            } else {
+                scoreHtml = `<span class="match-score-badge pending">Da disputare</span>`;
+            }
+        }
+
+        return `
+            <div class="match-item">
+                <div class="match-contrada">
+                    ${stemmaImg(t1, 24)}
+                    <span>${name(t1)}</span>
+                </div>
+                ${scoreHtml}
+                <div class="match-contrada right">
+                    <span>${name(t2)}</span>
+                    ${stemmaImg(t2, 24)}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    return `
+        <div class="matches-card">
+            <h4>${groupName} &mdash; Calendario & Risultati</h4>
+            <div class="matches-list">
+                ${items}
+            </div>
+        </div>
+    `;
 }
 
 function buildBracketMatch(t1, t2, s1, s2, isGold = false, isFune = false, winnerId = null) {
@@ -308,10 +457,22 @@ function resolveLooser(t1, t2, s1, s2) {
 // ─── Giochi Popolari a Classifica ────────────────────────────────────────────
 function renderRanking(game, data) {
     const container = document.getElementById(`results-${game}`);
-    if (!container) return;
+    const bannerEl = document.getElementById(`winner-banner-${game}`);
+    
+    if (!container) return null;
     if (!data || Object.keys(data).length === 0) {
         container.innerHTML = `<div class="ranking-card"><p class="pending-msg">Gara non ancora disputata. La classifica verrà inserita al termine della prova.</p></div>`;
-        return;
+        if (bannerEl) bannerEl.innerHTML = '';
+        return null;
+    }
+
+    const winnerId = data[1] || null;
+    if (bannerEl) {
+        if (winnerId) {
+            bannerEl.innerHTML = buildGameWinnerBanner(gameDisplayNames[game], winnerId, "+7 Punti Palio");
+        } else {
+            bannerEl.innerHTML = '';
+        }
     }
 
     const pts = { 1: 7, 2: 5, 3: 3 };
@@ -333,19 +494,33 @@ function renderRanking(game, data) {
     }
 
     container.innerHTML = `<div class="ranking-card">${rows || '<p class="pending-msg">Nessun dato.</p>'}</div>`;
+    return winnerId;
 }
 
 // ─── Arco & Balestra ─────────────────────────────────────────────────────────
 function renderShootingScore(game, data) {
     const container = document.getElementById(`results-${game}`);
-    if (!container) return;
-    if (!data || Object.keys(data).length === 0) {
+    const bannerEl = document.getElementById(`winner-banner-${game}`);
+    
+    if (!container) return null;
+    if (!data || Object.keys(data).length === 0 || !Object.values(data).some(p => p > 0)) {
         container.innerHTML = `<div class="score-card"><p class="pending-msg">Gara non ancora disputata. I punteggi dei bersagli verranno registrati in diretta.</p></div>`;
-        return;
+        if (bannerEl) bannerEl.innerHTML = '';
+        return null;
     }
+
     const sorted = contrade
         .map(c => ({ id: c.id, pt: data[c.id] ?? 0 }))
         .sort((a, b) => b.pt - a.pt);
+
+    const winnerId = sorted[0]?.pt > 0 ? sorted[0].id : null;
+    if (bannerEl) {
+        if (winnerId) {
+            bannerEl.innerHTML = buildGameWinnerBanner(gameDisplayNames[game], winnerId, `${sorted[0].pt} Punti realizzati`);
+        } else {
+            bannerEl.innerHTML = '';
+        }
+    }
 
     const rows = sorted.map(s => `
         <div class="score-row">
@@ -357,6 +532,23 @@ function renderShootingScore(game, data) {
         </div>`).join('');
 
     container.innerHTML = `<div class="score-card">${rows}</div>`;
+    return winnerId;
+}
+
+// ─── Helper: Game Winner Banner ──────────────────────────────────────────────
+function buildGameWinnerBanner(gameTitle, winnerId, extraInfo = "") {
+    return `
+        <div class="game-winner-box">
+            <div class="game-winner-title">
+                <span>🏆</span> GARA CONCLUSA &mdash; VINCITRICE ${gameTitle.toUpperCase()}
+            </div>
+            <div class="game-winner-contrada">
+                ${stemmaImg(winnerId, 34)}
+                <span>${name(winnerId)}</span>
+                ${extraInfo ? `<span style="font-size:0.82rem;font-weight:700;color:var(--burgundy);background:#ffffff;padding:3px 9px;border-radius:12px;border:1px solid #ebdcc5;margin-left:4px;">${extraInfo}</span>` : ''}
+            </div>
+        </div>
+    `;
 }
 
 // ─── Classifica girone (round-robin) ─────────────────────────────────────────

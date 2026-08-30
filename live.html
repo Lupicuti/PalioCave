@@ -15,9 +15,7 @@
     <link rel="stylesheet" href="css/style.css">
 
     <style>
-        /* ─── Force header dark on this page (no hero image behind it) ── */
-        /* On other pages the transparent header sits on top of a dark hero image.
-           Here the live section is light (parchment), so we force the dark style. */
+        /* ─── Force header dark on this page ─────────────────── */
         .site-header {
             background: rgba(28, 16, 8, 0.96) !important;
             backdrop-filter: blur(12px);
@@ -362,6 +360,157 @@
             padding: 0.5rem 0;
         }
 
+        /* ─── Group Matches Cards ────────────────────────────── */
+        .matches-grid {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        .matches-card {
+            flex: 1;
+            min-width: 300px;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 1.35rem 1.5rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            border: 1px solid #ebdcc5;
+        }
+        .matches-card h4 {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            color: var(--burgundy);
+            margin: 0 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gold);
+        }
+        .match-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.65rem 0.85rem;
+            background: #faf6ee;
+            border-radius: 8px;
+            margin-bottom: 0.6rem;
+            border: 1px solid #e8decb;
+            gap: 0.6rem;
+        }
+        .match-item:last-child {
+            margin-bottom: 0;
+        }
+        .match-contrada {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: #1c1008;
+            flex: 1;
+        }
+        .match-contrada.right {
+            justify-content: flex-end;
+            text-align: right;
+        }
+        .match-score-badge {
+            font-family: var(--font-sans);
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 0.25rem 0.65rem;
+            border-radius: 6px;
+            background: #ffffff;
+            border: 1.5px solid #dcd3c5;
+            color: var(--burgundy);
+            white-space: nowrap;
+            text-align: center;
+            min-width: 58px;
+        }
+        .match-score-badge.pending {
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: #998c7e;
+            background: #f0e9dc;
+            border-color: #dfd4c3;
+        }
+
+        /* ─── Palio Champion Banner ──────────────────────────── */
+        .palio-champion-card {
+            background: linear-gradient(135deg, #2a0808 0%, #5c1a1a 60%, #3a0d0d 100%);
+            border: 2.5px solid var(--gold);
+            border-radius: 16px;
+            padding: 2.2rem 1.8rem;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 2.2rem;
+            box-shadow: 0 8px 32px rgba(92, 26, 26, 0.4), 0 0 25px rgba(201, 168, 76, 0.35);
+            position: relative;
+            overflow: hidden;
+            animation: champion-glow 3s infinite alternate;
+        }
+        @keyframes champion-glow {
+            0% { box-shadow: 0 8px 32px rgba(92, 26, 26, 0.4), 0 0 15px rgba(201, 168, 76, 0.25); }
+            100% { box-shadow: 0 8px 36px rgba(92, 26, 26, 0.6), 0 0 30px rgba(201, 168, 76, 0.55); }
+        }
+        .palio-champion-badge {
+            display: inline-block;
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            background: rgba(0,0,0,0.4);
+            padding: 0.4rem 1.1rem;
+            border-radius: 20px;
+            border: 1px solid rgba(201,168,76,0.45);
+            margin-bottom: 0.9rem;
+        }
+        .palio-champion-title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            color: #ffffff;
+            margin: 0.4rem 0;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+        }
+        .palio-champion-score {
+            font-family: var(--font-sans);
+            font-size: 1.15rem;
+            color: var(--gold-lt);
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* ─── Individual Game Winner Box ─────────────────────── */
+        .game-winner-box {
+            background: linear-gradient(135deg, #fef9ed 0%, #faecd2 100%);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 1.1rem 1.4rem;
+            margin-bottom: 1.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            box-shadow: 0 4px 16px rgba(201, 168, 76, 0.2);
+        }
+        .game-winner-title {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--burgundy);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .game-winner-contrada {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: #1c1008;
+        }
+
         .hidden { display: none !important; }
     </style>
 </head>
@@ -463,6 +612,7 @@
 
         <!-- ── TAB: Classifica Generale ── -->
         <div id="tab-classifica" class="tab-content">
+            <div id="palio-champion-banner"></div>
             <h2 class="section-hl">🏆 Classifica Generale del Palio</h2>
             <div class="leaderboard-card">
                 <table class="leaderboard-table">
@@ -482,42 +632,54 @@
 
         <!-- ── TAB: Palla Grossa ── -->
         <div id="tab-palla" class="tab-content hidden">
+            <div id="winner-banner-palla"></div>
             <h2 class="section-hl">⚽ Torneo Palla Grossa</h2>
             <div class="group-grid" id="palla-groups"></div>
+            <h3 class="section-hl" style="font-size:1.3rem;margin-top:2rem;">📅 Partite e Risultati dei Gironi</h3>
+            <div class="matches-grid" id="palla-matches"></div>
             <div id="palla-finals"></div>
         </div>
 
         <!-- ── TAB: Tiro alla Fune ── -->
         <div id="tab-fune" class="tab-content hidden">
+            <div id="winner-banner-fune"></div>
             <h2 class="section-hl">💪 Torneo Tiro alla Fune</h2>
             <div class="group-grid" id="fune-groups"></div>
+            <h3 class="section-hl" style="font-size:1.3rem;margin-top:2rem;">📅 Sfide e Risultati dei Gironi</h3>
+            <div class="matches-grid" id="fune-matches"></div>
             <div id="fune-finals"></div>
         </div>
 
         <!-- ── TABS: Giochi Popolari a Classifica ── -->
         <div id="tab-conca" class="tab-content hidden">
+            <div id="winner-banner-conca"></div>
             <h2 class="section-hl">🪣 Gioco della Conca</h2>
             <div id="results-conca"></div>
         </div>
         <div id="tab-anelli" class="tab-content hidden">
+            <div id="winner-banner-anelli"></div>
             <h2 class="section-hl">⭕ Gioco degli Anelli</h2>
             <div id="results-anelli"></div>
         </div>
         <div id="tab-ruzzica" class="tab-content hidden">
+            <div id="winner-banner-ruzzica"></div>
             <h2 class="section-hl">🥏 Gioco della Ruzzica</h2>
             <div id="results-ruzzica"></div>
         </div>
         <div id="tab-sacchi" class="tab-content hidden">
+            <div id="winner-banner-sacchi"></div>
             <h2 class="section-hl">👟 Corsa con i Sacchi</h2>
             <div id="results-sacchi"></div>
         </div>
 
         <!-- ── TABS: Arco & Balestra ── -->
         <div id="tab-arco" class="tab-content hidden">
+            <div id="winner-banner-arco"></div>
             <h2 class="section-hl">🏹 Tiro con l'Arco Storico</h2>
             <div id="results-arco"></div>
         </div>
         <div id="tab-balestra" class="tab-content hidden">
+            <div id="winner-banner-balestra"></div>
             <h2 class="section-hl">🎯 Balestra Antica da Banco</h2>
             <div id="results-balestra"></div>
         </div>
