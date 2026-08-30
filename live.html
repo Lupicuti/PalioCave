@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palio Live 2026 | Classifica e Risultati in Tempo Reale</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ─── Live Badge ────────────────────────────────────── */
+        .live-badge {
+            background-color: #c0392b;
+            color: white;
+            padding: 0.3rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0%   { box-shadow: 0 0 0 0   rgba(192,57,43,0.7); }
+            70%  { box-shadow: 0 0 0 10px rgba(192,57,43,0); }
+            100% { box-shadow: 0 0 0 0   rgba(192,57,43,0); }
+        }
+        .live-dot { width: 8px; height: 8px; background: white; border-radius: 50%; }
+
+        /* ─── Page wrapper ──────────────────────────────────── */
+        #main-content { padding-top: 100px; background-color: var(--parchment); min-height: 100vh; }
+        .live-wrapper { max-width: 960px; margin: 0 auto; padding: 0 1.5rem 5rem; }
+
+        /* ─── Leaderboard table ─────────────────────────────── */
+        .leaderboard-table {
+            width: 100%; border-collapse: collapse;
+            background: white; border-radius: 12px;
+            overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .leaderboard-table thead th {
+            background: var(--burgundy); color: white;
+            font-family: var(--font-serif); font-weight: 600;
+            padding: 1rem 1.25rem; text-align: left;
+        }
+        .leaderboard-table thead th:last-child { text-align: right; }
+        .leaderboard-table tbody td { padding: 0.9rem 1.25rem; border-bottom: 1px solid #f0ece5; }
+        .leaderboard-table tbody tr:last-child td { border-bottom: none; }
+        .leaderboard-table tbody tr:hover { background: #fdf9f4; transition: background 0.2s; }
+        .rank-col { width: 60px; text-align: center !important; font-size: 1.3rem; }
+        .name-col { font-weight: 600; color: #2d2d2d; font-size: 1rem; }
+        .score-col { text-align: right !important; font-weight: 700; color: var(--burgundy); font-size: 1.1rem; }
+        .pts-label { font-size: 0.7rem; font-weight: 400; color: #888; margin-left: 2px; }
+
+        /* ─── Tab bar ───────────────────────────────────────── */
+        .tab-bar {
+            display: flex; gap: 0.5rem; flex-wrap: wrap;
+            margin: 2.5rem 0 1.75rem; padding-bottom: 0;
+        }
+        .tab-btn {
+            background: white; border: 1.5px solid #ddd;
+            font-family: var(--font-sans); font-size: 0.82rem;
+            font-weight: 600; color: #555;
+            padding: 0.5rem 1.1rem; border-radius: 30px;
+            cursor: pointer; transition: all 0.2s; white-space: nowrap;
+        }
+        .tab-btn:hover { border-color: var(--burgundy); color: var(--burgundy); }
+        .tab-btn.active {
+            background: var(--burgundy); color: white;
+            border-color: var(--burgundy); box-shadow: 0 3px 10px rgba(115,28,36,0.2);
+        }
+
+        /* ─── Section title ─────────────────────────────────── */
+        .section-hl {
+            font-family: var(--font-serif); font-size: 1.6rem;
+            color: var(--burgundy); margin: 0 0 1.25rem;
+        }
+
+        /* ─── Group tables ──────────────────────────────────── */
+        .group-grid { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        .group-card {
+            flex: 1; min-width: 260px;
+            background: white; border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.06);
+        }
+        .group-card h4 {
+            font-family: var(--font-serif); font-size: 1rem;
+            color: var(--burgundy); margin: 0 0 0.75rem;
+            padding-bottom: 0.5rem; border-bottom: 2px solid var(--gold);
+        }
+        .group-card table { width: 100%; border-collapse: collapse; }
+        .group-card th {
+            font-size: 0.75rem; font-weight: 600; color: #888;
+            text-align: center; padding: 0.3rem 0.5rem;
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .group-card th:first-child { text-align: left; }
+        .group-card td { padding: 0.45rem 0.5rem; border-bottom: 1px solid #f5f5f5; font-size: 0.9rem; text-align: center; }
+        .group-card td:first-child { text-align: left; font-weight: 600; color: #222; }
+        .group-card tr:last-child td { border-bottom: none; }
+        .pts-strong { font-weight: 700; color: var(--burgundy); }
+
+        /* ─── Bracket ───────────────────────────────────────── */
+        .bracket-card {
+            background: white; border-radius: 10px; padding: 1.5rem;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.06);
+        }
+        .bracket-card h4 {
+            font-family: var(--font-serif); font-size: 1rem;
+            color: var(--burgundy); margin: 0 0 1rem;
+        }
+        .bracket-match {
+            display: flex; align-items: stretch;
+            background: #f9f6f2; border-radius: 8px;
+            overflow: hidden; margin-bottom: 0.75rem;
+            border: 1px solid #ede9e2;
+        }
+        .bracket-match.gold-final { border: 2px solid var(--gold); }
+        .bracket-teams { flex: 1; padding: 0.75rem 1rem; }
+        .bracket-team {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.3rem 0;
+        }
+        .bracket-team-name { font-weight: 600; color: #2d2d2d; font-size: 0.92rem; }
+        .bracket-team-score {
+            font-weight: 700; font-size: 1.1rem; color: var(--burgundy);
+            min-width: 28px; text-align: center;
+        }
+        .bracket-team-score.winner { color: #2e7d32; }
+        .bracket-divider { border: none; border-top: 1px solid #ede9e2; margin: 0; }
+        .bracket-label {
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.07em; color: #888; margin: 1rem 0 0.4rem;
+        }
+        .bracket-label.gold { color: #b8860b; }
+
+        /* ─── Ranking game card ─────────────────────────────── */
+        .ranking-card {
+            background: white; border-radius: 10px; padding: 1.25rem 1.5rem;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.06);
+        }
+        .ranking-card h4 {
+            font-family: var(--font-serif); font-size: 1.1rem;
+            color: var(--burgundy); margin: 0 0 1rem;
+            padding-bottom: 0.5rem; border-bottom: 2px solid var(--gold);
+        }
+        .ranking-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.4rem 0; border-bottom: 1px solid #f3f0ea;
+        }
+        .ranking-row:last-child { border-bottom: none; }
+        .ranking-pos { font-size: 1.1rem; margin-right: 0.5rem; min-width: 28px; }
+        .ranking-name { font-weight: 600; color: #222; font-size: 0.92rem; }
+        .ranking-pts { font-weight: 700; font-size: 0.85rem; color: #888; }
+        .pending-msg { color: #aaa; font-style: italic; font-size: 0.88rem; }
+
+        /* ─── Arco/Balestra score card ──────────────────────── */
+        .score-card {
+            background: white; border-radius: 10px; padding: 1.25rem 1.5rem;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.06);
+        }
+        .score-card h4 {
+            font-family: var(--font-serif); font-size: 1.1rem;
+            color: var(--burgundy); margin: 0 0 1rem;
+            padding-bottom: 0.5rem; border-bottom: 2px solid var(--gold);
+        }
+        .score-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.4rem 0; border-bottom: 1px solid #f3f0ea;
+        }
+        .score-row:last-child { border-bottom: none; }
+        .score-name { font-weight: 600; color: #222; font-size: 0.92rem; }
+        .score-val { font-weight: 700; color: var(--burgundy); font-size: 1rem; }
+
+        /* ─── Last update timestamp ─────────────────────────── */
+        #last-update { font-size: 0.78rem; color: #999; margin-top: 0.5rem; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<header class="site-header" role="banner">
+    <div class="container">
+        <div class="header-inner">
+            <a href="index.html" class="header-logo" aria-label="Home">
+                <img src="assets/images/logo.webp" alt="Logo Trattato di Pace di Cave 1557" class="logo-img">
+                <div class="logo-text">Trattato di Pace<span>di Cave 1557</span></div>
+            </a>
+            <nav class="site-nav" aria-label="Navigazione principale">
+                <a href="index.html">Home</a>
+                <a href="palio.html">Il Palio</a>
+                <a href="live.html" class="active" style="color:var(--gold); font-weight:bold;">LIVE 🔴</a>
+            </nav>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Apri menu" aria-expanded="false" aria-controls="mobile-drawer">
+                <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main id="main-content">
+    <div class="live-wrapper">
+
+        <!-- Header -->
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-top:2rem; flex-wrap:wrap; gap:1rem; margin-bottom:0.25rem;">
+            <div>
+                <h1 class="section-hl" style="margin-bottom:0.15rem;">Palio di Cave 2026</h1>
+                <div id="last-update">In attesa di dati dal database…</div>
+            </div>
+            <div class="live-badge"><div class="live-dot"></div> IN DIRETTA</div>
+        </div>
+
+        <!-- Tab bar (Classifica first, then one per game) -->
+        <nav class="tab-bar" aria-label="Sezioni risultati">
+            <button class="tab-btn active" id="btn-classifica" onclick="showTab('classifica', this)">🏆 Classifica Generale</button>
+            <button class="tab-btn" id="btn-palla"     onclick="showTab('palla',     this)">⚽ Palla Grossa</button>
+            <button class="tab-btn" id="btn-fune"      onclick="showTab('fune',      this)">💪 Tiro alla Fune</button>
+            <button class="tab-btn" id="btn-conca"     onclick="showTab('conca',     this)">🪣 Conca</button>
+            <button class="tab-btn" id="btn-anelli"    onclick="showTab('anelli',    this)">⭕ Anelli</button>
+            <button class="tab-btn" id="btn-ruzzica"   onclick="showTab('ruzzica',   this)">🥏 Ruzzica</button>
+            <button class="tab-btn" id="btn-sacchi"    onclick="showTab('sacchi',    this)">👟 Corsa Sacchi</button>
+            <button class="tab-btn" id="btn-arco"      onclick="showTab('arco',      this)">🏹 Tiro con l'Arco</button>
+            <button class="tab-btn" id="btn-balestra"  onclick="showTab('balestra',  this)">🎯 Balestra</button>
+        </nav>
+
+        <!-- ── Avviso file:// ── -->
+        <div id="file-protocol-warning" style="display:none; background:#fff3cd; border:1px solid #ffc107; color:#856404; padding:0.85rem 1.25rem; border-radius:8px; margin-bottom:1.5rem; font-size:0.88rem;">
+            ⚠️ <strong>Stai aprendo il sito con il protocollo <code>file://</code></strong> — Firebase non funziona in locale senza un server HTTP. I dati mostrati sono quelli di partenza (0 punti). Per testare, usa Live Server in VS Code oppure carica il sito online.
+        </div>
+
+        <!-- ── Classifica Generale ── -->
+        <div id="tab-classifica" class="tab-content">
+            <h2 class="section-hl">Classifica Generale</h2>
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th class="rank-col">Pos</th>
+                        <th>Contrada</th>
+                        <th class="score-col">Punti Totali</th>
+                    </tr>
+                </thead>
+                <tbody id="global-leaderboard">
+                    <!-- Pre-populated alphabetically at 0 pts by JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ── Palla Grossa ── -->
+        <div id="tab-palla" class="tab-content hidden">
+            <h2 class="section-hl">Torneo Palla Grossa</h2>
+            <div class="group-grid" id="palla-groups"></div>
+            <div id="palla-finals"></div>
+        </div>
+
+        <!-- ── Tiro alla Fune ── -->
+        <div id="tab-fune" class="tab-content hidden">
+            <h2 class="section-hl">Torneo Tiro alla Fune</h2>
+            <div class="group-grid" id="fune-groups"></div>
+            <div id="fune-finals"></div>
+        </div>
+
+        <!-- ── Giochi a Classifica ── -->
+        <div id="tab-conca" class="tab-content hidden">
+            <h2 class="section-hl">Gioco della Conca</h2>
+            <div id="results-conca"></div>
+        </div>
+        <div id="tab-anelli" class="tab-content hidden">
+            <h2 class="section-hl">Gioco degli Anelli</h2>
+            <div id="results-anelli"></div>
+        </div>
+        <div id="tab-ruzzica" class="tab-content hidden">
+            <h2 class="section-hl">Gioco della Ruzzica</h2>
+            <div id="results-ruzzica"></div>
+        </div>
+        <div id="tab-sacchi" class="tab-content hidden">
+            <h2 class="section-hl">Corsa con i Sacchi</h2>
+            <div id="results-sacchi"></div>
+        </div>
+
+        <!-- ── Arco & Balestra ── -->
+        <div id="tab-arco" class="tab-content hidden">
+            <h2 class="section-hl">Tiro con l'Arco</h2>
+            <div id="results-arco"></div>
+        </div>
+        <div id="tab-balestra" class="tab-content hidden">
+            <h2 class="section-hl">Tiro con la Balestra</h2>
+            <div id="results-balestra"></div>
+        </div>
+
+    </div><!-- /live-wrapper -->
+</main>
+
+<script>
+    function showTab(id, btn) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById('tab-' + id).classList.remove('hidden');
+        btn.classList.add('active');
+    }
+</script>
+<script type="module" src="js/live.js"></script>
+</body>
+</html>

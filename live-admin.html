@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Live | Palio di Cave</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background-color: var(--parchment); color: var(--slate); font-family: var(--font-sans); padding: 2rem 1rem; }
+        .admin-container { max-width: 800px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1, h2, h3 { font-family: var(--font-serif); color: var(--burgundy); }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        select, input { width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-family: var(--font-sans); }
+        button { background: var(--gold); color: var(--burgundy); font-weight: 700; padding: 0.75rem 1.5rem; border: none; border-radius: 4px; cursor: pointer; transition: 0.3s; width: 100%; }
+        button:hover { background: var(--burgundy); color: white; }
+        .hidden { display: none !important; }
+        .login-screen { text-align: center; margin-top: 10vh; }
+        .login-screen input { width: 100%; max-width: 300px; margin: 0 auto 1rem; display: block; text-align: center; }
+        
+        .game-section { border: 1px solid #eee; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; }
+        .contrada-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; padding: 0.5rem; background: #f9f9f9; border-radius: 4px; }
+        .contrada-row select, .contrada-row input { width: 150px; }
+        .status-msg { margin-top: 1rem; padding: 1rem; border-radius: 4px; font-weight: bold; text-align: center; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        
+        .match-row { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; background: #f5f5f5; padding: 0.5rem; border-radius: 4px;}
+        .match-row > div { flex: 1; text-align: center; font-weight: 600;}
+        .match-row input { width: 60px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen" class="admin-container login-screen">
+        <h1>Palio Live Admin</h1>
+        <p>Inserisci la password per accedere al pannello di controllo.</p>
+        <input type="password" id="admin-pwd" placeholder="Password...">
+        <button id="login-btn" style="max-width: 300px;">Accedi</button>
+        <div id="login-err" style="color:red; margin-top:1rem; display:none;">Password errata.</div>
+    </div>
+
+    <div id="admin-panel" class="admin-container hidden">
+        <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 2rem;">
+            <h1>Pannello Giudici</h1>
+            <a href="live.html" target="_blank" style="color:var(--gold); font-weight:bold; text-decoration:none;">Vedi sito pubblico &rarr;</a>
+        </div>
+        
+        <div class="form-group">
+            <label>Seleziona il Gioco da aggiornare</label>
+            <select id="game-selector">
+                <option value="">-- Seleziona --</option>
+                <optgroup label="Giochi Popolari (Classifica 1°-7°)">
+                    <option value="conca">Gioco della Conca</option>
+                    <option value="anelli">Gioco degli Anelli</option>
+                    <option value="ruzzica">Gioco della Ruzzica</option>
+                    <option value="sacchi">Corsa con i Sacchi</option>
+                </optgroup>
+                <optgroup label="Tiro (Punti 0-100)">
+                    <option value="arco">Tiro con l'Arco</option>
+                    <option value="balestra">Tiro con la Balestra</option>
+                </optgroup>
+                <optgroup label="Tornei (Partite e Gironi)">
+                    <option value="palla">Palla Grossa</option>
+                    <option value="fune">Tiro alla Fune</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <!-- Sezione Classifica Giochi Popolari -->
+        <div id="ranking-section" class="game-section hidden">
+            <h2 id="ranking-title">Classifica Gioco</h2>
+            <p>Seleziona la posizione d'arrivo per ogni contrada (1° = 7 pt, 2° = 5 pt, 3° = 3 pt, gli altri 0). Non lasciare doppioni.</p>
+            <div id="ranking-rows"></div>
+            <button id="save-ranking-btn" style="margin-top: 1rem;">Salva Classifica ed Assegna Punti Palio</button>
+        </div>
+
+        <!-- Sezione Punti Arco/Balestra -->
+        <div id="points-section" class="game-section hidden">
+            <h2 id="points-title">Punti Gara</h2>
+            <p>Inserisci i punti esatti realizzati (da 0 a 100).</p>
+            <div id="points-rows"></div>
+            <button id="save-points-btn" style="margin-top: 1rem;">Salva Punti</button>
+        </div>
+
+        <!-- Sezione Tornei -->
+        <div id="tournament-section" class="game-section hidden">
+            <h2 id="tournament-title">Torneo</h2>
+            <p>Inserisci i gol/punti della partita. Se è uno sport a vincitore secco (es. Fune), metti 1 a chi ha vinto e 0 a chi ha perso.</p>
+            
+            <h3>Gironi (A e B)</h3>
+            <div id="tournament-matches"></div>
+            <button id="save-matches-btn" style="margin-top: 1rem; margin-bottom: 2rem;">Aggiorna Gironi</button>
+            <hr style="border:0; border-top:1px solid #ccc; margin: 2rem 0;">
+            
+            <h3>Fase Finale (Calcolata dai Gironi)</h3>
+            <div id="tournament-finals">
+                <div class="match-row">
+                    <div>1° Girone A<br><span id="sf1-team1" style="font-size:0.8rem;color:var(--gold);">?</span></div>
+                    <input type="number" id="sf1-score1" min="0">
+                    <div>VS</div>
+                    <input type="number" id="sf1-score2" min="0">
+                    <div>2° Girone B<br><span id="sf1-team2" style="font-size:0.8rem;color:var(--gold);">?</span></div>
+                </div>
+                <div class="match-row">
+                    <div>1° Girone B<br><span id="sf2-team1" style="font-size:0.8rem;color:var(--gold);">?</span></div>
+                    <input type="number" id="sf2-score1" min="0">
+                    <div>VS</div>
+                    <input type="number" id="sf2-score2" min="0">
+                    <div>2° Girone A<br><span id="sf2-team2" style="font-size:0.8rem;color:var(--gold);">?</span></div>
+                </div>
+                <h4 style="text-align:center; margin-top:1rem;">Finale 3°/4° Posto</h4>
+                <div class="match-row">
+                    <div>Perdente SF 1<br><span id="f3-team1" style="font-size:0.8rem;color:var(--gold);">?</span></div>
+                    <input type="number" id="f3-score1" min="0">
+                    <div>VS</div>
+                    <input type="number" id="f3-score2" min="0">
+                    <div>Perdente SF 2<br><span id="f3-team2" style="font-size:0.8rem;color:var(--gold);">?</span></div>
+                </div>
+                <h4 style="text-align:center; margin-top:1rem;">Finale 1°/2° Posto</h4>
+                <div class="match-row">
+                    <div>Vincente SF 1<br><span id="f1-team1" style="font-size:0.8rem;color:var(--gold);">?</span></div>
+                    <input type="number" id="f1-score1" min="0">
+                    <div>VS</div>
+                    <input type="number" id="f1-score2" min="0">
+                    <div>Vincente SF 2<br><span id="f1-team2" style="font-size:0.8rem;color:var(--gold);">?</span></div>
+                </div>
+            </div>
+            <button id="save-finals-btn" style="margin-top: 1rem; background: var(--burgundy); color: white;">Salva Finali e ASSEGNA PUNTI PALIO (7-5-3)</button>
+        </div>
+
+        <div id="global-status" class="status-msg hidden"></div>
+        
+        <!-- Azioni Pericolose -->
+        <div style="margin-top: 4rem; padding-top: 1rem; border-top: 2px dashed #ccc;">
+            <button id="reset-db-btn" style="background: transparent; color: red; border: 1px solid red;">⚠ Azzera tutto il database (Inizia nuovo anno)</button>
+        </div>
+    </div>
+
+    <script type="module" src="js/live-admin.js"></script>
+</body>
+</html>
