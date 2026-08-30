@@ -1,0 +1,6 @@
+Prendi intanto le informazioni testuali da palio.html per capire di cosa si tratta. Ogni gioco popolare da 7 punti al 1o, 5 al 2o e 3 al 3o. La palla e il tiro alla fune hanno gironi e eliminazione diretta. Gli altri giochi popolari hanno soltanto una classifica finale.
+Arco e balestra danno al massimo 100 punti ciascuno.
+Nella pagina voglio che l'admin può selezionare il gioco e inserire o la classifica finale (nei giochi in cui non c'è punteggio esplicito tipo la conca o corsa coi sacchi) oppure il punteggio alla fine delle partite (nel caso della palla) oppure del vincitore della partita (tipo fune) oppure il numero esplicito di punti fatti con arco e balestra. Fai in modo che tutto si aggiorni in maniera autonoma e venga automaticamente aggionrata la calssifica nei gironi, le partite disputate.
+La classifica finale del palio è data dalla somma dei punti ottenuti dai giochi popolari e da arco e balestra.
+
+Queste sono solo delle linee guida, sentiti libero di fare dei miglioramenti o delle modifiche se pensi che sia opportuno.
