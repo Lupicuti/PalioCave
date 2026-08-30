@@ -156,4 +156,47 @@ document.addEventListener('DOMContentLoaded', () => {
         startAutoplay();
     }
 
+    /* --------------------------------------------------------
+       FAQ Modal (Overlay in sovraimpressione)
+    -------------------------------------------------------- */
+    const faqModal   = document.getElementById('faq-modal');
+    const openFaqBtns = document.querySelectorAll('[data-open-faq], a[href="#faq-modal"], a[href="#faq-cena"]');
+    const closeFaqBtns = document.querySelectorAll('[data-close-faq], .modal-close-btn');
+
+    if (faqModal) {
+        const openModal = (e) => {
+            if (e) e.preventDefault();
+            faqModal.classList.add('open');
+            faqModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            const firstFocusable = faqModal.querySelector('button, [href], details');
+            firstFocusable?.focus();
+        };
+
+        const closeModal = () => {
+            faqModal.classList.remove('open');
+            faqModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        };
+
+        openFaqBtns.forEach(btn => btn.addEventListener('click', openModal));
+        closeFaqBtns.forEach(btn => btn.addEventListener('click', closeModal));
+
+        faqModal.addEventListener('click', (e) => {
+            if (e.target === faqModal) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && faqModal.classList.contains('open')) {
+                closeModal();
+            }
+        });
+
+        // Check if URL contains #faq-modal or #faq-cena on page load
+        if (window.location.hash === '#faq-modal' || window.location.hash === '#faq-cena') {
+            openModal();
+        }
+    }
+
 });
+
